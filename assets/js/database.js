@@ -40,5 +40,5 @@ async function main() {
 }
 
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 3000);
 console.log("Running at " + process.env.PORT);
