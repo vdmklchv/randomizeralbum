@@ -24,7 +24,7 @@ app.get("/next-album", (req, res) => {
 
 
 async function main() {
-    const uri = "mongodb+srv://vdmclcv:testdb@cluster0.t1wlx.mongodb.net/albums?retryWrites=true&w=majority";
+    const uri = "mongodb+srv://vdmclcv:albumdbpass@cluster0.t1wlx.mongodb.net/albums?retryWrites=true&w=majority";
     const client = new MongoClient(uri, { useUnifiedTopology: true });
     await client.connect();
     const db = await client.db("albumsdb");
