@@ -37,7 +37,7 @@ app.get("/next-album", (req, res) => {
 async function main() {
     //albums = [];
     const numberOfAlbums = await getNumberOfAlbums();
-    if (albums.length !== albumNumber) {
+    if (albums.length !== numberOfAlbums) {
         await retrieveAlbums();
     }
     await getRandomAlbum();
