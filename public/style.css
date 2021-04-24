@@ -11,4 +11,6 @@ body {
 
 #artwork {
   border-radius: 1em;
+  max-height: 300px;
+  margin: auto;
 }
