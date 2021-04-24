@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 app.engine("html", require('ejs').renderFile);
 app.set('view engine', 'html');
+const dotenv = require('dotenv');
+dotenv.config();
 const {
     MongoClient
 } = require('mongodb');
@@ -55,7 +57,7 @@ async function getNumberOfAlbums() {
 }
 
 async function getDbCollection() {
-    const uri = "mongodb+srv://vdmclcv:albumdbpass@cluster0.t1wlx.mongodb.net/albums?retryWrites=true&w=majority";
+    const uri = process.env.MONGODB_URI;
     const client = new MongoClient(uri, {
         useUnifiedTopology: true
     });
