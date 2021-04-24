@@ -16,13 +16,17 @@
 <body>
     <div class="container mt-5 d-flex justify-content-between align-items-center">
         <div class="row w-100">
-            <div class="col-lg-7 album-data mx-auto px-5">
-                <h1 class="mb-3">Album name: <%= album %></h1>
-                <h2 class="mb-3">Artist: <%= artist %></h2>
-                <p>Number of albums: <%= albumNumber %></p>
-                <form action="/next-album" method="get">
-                    <button class="btn btn-primary">Next album</button>
-                </form>
+            <div class="col-lg-7 album-data mx-auto px-5 d-flex flex-column justify-content-between">
+                <div class="data">
+                    <h1 class="mb-3">Album name: <%= album %></h1>
+                    <h2 class="mb-3">Artist: <%= artist %></h2>
+                    <p>Number of albums: <%= albumNumber %></p>
+                </div>
+                <div class="action-controls">
+                    <form action="/next-album" method="get">
+                        <button class="btn btn-primary">Next album</button>
+                    </form>
+                </div>
             </div>
             <div class="col-lg-5 album-artwork mx-auto d-flex">
                 <img id="artwork" class="img-fluid" src="<%= art %>" alt="album artwork">

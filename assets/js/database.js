@@ -33,6 +33,11 @@ app.get("/next-album", (req, res) => {
 
 async function main() {
     albums = [];
+    await retrieveAlbums();
+    await getRandomAlbum();
+};
+
+async function retrieveAlbums() {
     const uri = "mongodb+srv://vdmclcv:albumdbpass@cluster0.t1wlx.mongodb.net/albums?retryWrites=true&w=majority";
     const client = new MongoClient(uri, {
         useUnifiedTopology: true
@@ -44,13 +49,16 @@ async function main() {
     collection.find().forEach((item) => {
         albums.push(item);
     });
+}
+
+function getRandomAlbum() {
     if (albums.length !== 0) {
         const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
         artist = randomAlbum.artist;
         album = randomAlbum.name;
         art = randomAlbum.artwork;
     }
-};
+}
 
 
 app.listen(process.env.PORT || 3000);
