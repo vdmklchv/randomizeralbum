@@ -1,0 +1,14 @@
+body {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 20px;
+}
+
+.container {
+  background-color: lightblue;
+  border-radius: 1em;
+  min-height: 400px;
+}
+
+#artwork {
+  border-radius: 1em;
+}
