@@ -26,18 +26,35 @@ app.get("/", (req, res) => {
 })
 
 app.get("/next-album", (req, res) => {
-    main().then(() => res.redirect('/'));
+    getRandomAlbum().then(() => res.redirect('/'));
+    //main().then(() => res.redirect('/'));
     //res.redirect("/");
 });
 
 
 async function main() {
-    albums = [];
-    await retrieveAlbums();
+    //albums = [];
+    const numberOfAlbums = await getNumberOfAlbums();
+    if (albums.length !== albumNumber) {
+        await retrieveAlbums();
+    }
     await getRandomAlbum();
 };
 
 async function retrieveAlbums() {
+    const collection = await getDbCollection();
+    collection.find().forEach((item) => {
+        albums.push(item);
+    });
+}
+
+async function getNumberOfAlbums() {
+    const collection = await getDbCollection();
+    albumNumber = await collection.countDocuments();
+    return albumNumber;
+}
+
+async function getDbCollection() {
     const uri = "mongodb+srv://vdmclcv:albumdbpass@cluster0.t1wlx.mongodb.net/albums?retryWrites=true&w=majority";
     const client = new MongoClient(uri, {
         useUnifiedTopology: true
@@ -45,13 +62,10 @@ async function retrieveAlbums() {
     await client.connect();
     const db = await client.db("albumsdb");
     const collection = await db.collection("albums");
-    albumNumber = await collection.countDocuments();
-    collection.find().forEach((item) => {
-        albums.push(item);
-    });
+    return collection;
 }
 
-function getRandomAlbum() {
+async function getRandomAlbum() {
     if (albums.length !== 0) {
         const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
         artist = randomAlbum.artist;
