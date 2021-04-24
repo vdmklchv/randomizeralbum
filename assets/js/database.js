@@ -14,7 +14,6 @@ let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?
 
 app.use(express.static('public'));
 
-
 app.get("/", (req, res) => {
     main().then(() => {
         res.render("index.html", {
@@ -41,17 +40,17 @@ async function main() {
     await client.connect();
     const db = await client.db("albumsdb");
     const collection = await db.collection("albums");
+    albumNumber = await collection.countDocuments();
     collection.find().forEach((item) => {
         albums.push(item);
-    }).then(() => {
+    });
+    if (albums.length !== 0) {
         const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
-        //console.log(`Next you should listen to ${randomAlbum.name} by ${randomAlbum.artist}`);
         artist = randomAlbum.artist;
         album = randomAlbum.name;
-        albumNumber = albums.length;
         art = randomAlbum.artwork;
-    });
-}
+    }
+};
 
 
 app.listen(process.env.PORT || 3000);
