@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-  background-color: lightblue;
+  background-image: linear-gradient(to left, rgba(173, 216, 230, 0.4), rgba(110, 241, 198, 0.363));
   border-radius: 1em;
   min-height: 400px;
 }
