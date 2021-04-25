@@ -4,9 +4,21 @@ body {
 }
 
 .container {
-  background-image: linear-gradient(to left, rgba(173, 216, 230, 0.4), rgba(110, 241, 198, 0.363));
+  background-image: linear-gradient(to left, rgba(212, 173, 106, 0.4), rgba(212, 173, 106, 0.7));
   border-radius: 1em;
   min-height: 400px;
+}
+
+.btn-primary {
+  background-color: rgba(32, 24, 88);
+  text-transform: uppercase;
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: scale(1.01);
+  cursor: pointer;
+  background-color: rgb(56, 43, 143);
 }
 
 #artwork {
