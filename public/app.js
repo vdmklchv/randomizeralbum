@@ -7,27 +7,32 @@ function addAlbum(event) {
   const artist = document.querySelector("#artist").value;
   const year = document.querySelector("#year").value;
   const artwork = document.querySelector("#artwork-url").value;
-  const album = new Album(name, artist, artwork, year);
-  // send data to backend
-  fetch('/add', {
-    method: "POST",
-    body: JSON.stringify(album),
-    headers: {
-      'content-type': 'application/json',
-    }
-  }).then((response) => {
-    // check if operation is a success and add corresponding class
-    if (response.status === 200) {
-      showModal(true);
-    } else {
-      showModal(false);
-    }
-  })
 
 
+  // Validate if data is provided
+  if (!name || !artist || !year || !artwork) {
+    showModal('warning', 'Please fill in all fields.');
+  } else {
+    const album = new Album(name, artist, artwork, year);
+    // send data to backend
+    fetch('/add', {
+      method: "POST",
+      body: JSON.stringify(album),
+      headers: {
+        'content-type': 'application/json',
+      }
+    }).then((response) => {
+      // check if operation is a success and add corresponding class
+      if (response.status === 200) {
+        showModal('success', 'Success! Album added to DB');
+      } else {
+        showModal('danger', 'Error! Something went wrong. Please try again later');
+      }
+      // clear inputs
+      clearForm();
+    })
+  }
 
-  // clear inputs
-  clearForm();
   event.preventDefault();
 }
 
@@ -47,10 +52,9 @@ function clearForm() {
 }
 
 // function to show modal
-function showModal(isSuccessful) {
-  let text = isSuccessful ? "Success! Added album to collection." : "Error! Failed to add album. Try again later.";
+function showModal(className, text) {
   const div = document.createElement('div');
-  div.className = "alert alert-success";
+  div.className = `alert alert-${className}`;
   div.setAttribute('role', 'alert');
   div.appendChild(document.createTextNode(text));
   document.querySelector("#main-row").insertBefore(div, document.querySelector('#form-container'));
