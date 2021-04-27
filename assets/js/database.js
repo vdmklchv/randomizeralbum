@@ -39,6 +39,10 @@ app.get("/add", function (req, res) {
     res.render("add.html");
 })
 
+app.get("/login", function (req, res) {
+    res.render("login.html");
+})
+
 app.post("/add", function (req, res) {
     saveToDb(req.body)
         .then(res.redirect('/'));

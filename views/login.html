@@ -27,41 +27,15 @@
             <a class="nav-link" aria-current="page" href="/">Random album</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/add">Add album</a>
+            <a class="nav-link" href="/add">Add album</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link active" href="/login">Login</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <div class="container">
-    <div class="row" id="main-row">
-      <div class="col-10 col-lg-8 mx-auto" id="form-container">
-        <form action="/add" method="POST" class="mt-5" id="album-add-form">
-          <div class="form-group">
-            <label for="album-title">Album title</label>
-            <input type="text" class="form-control mb-3" id="album-title" placeholder="Enter album title">
-          </div>
-          <div class="form-group">
-            <label for="artist">Artist</label>
-            <input type="text" class="form-control mb-3" id="artist" placeholder="Artist">
-          </div>
-          <div class="form-group">
-            <label for="year">Release Year</label>
-            <input type="text" class="form-control mb-3" id="year" placeholder="Release year">
-          </div>
-          <div class="form-group">
-            <label for="artwork-url">Artwork</label>
-            <input type="text" class="form-control mb-3" id="artwork-url" placeholder="Artwork URL">
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg my-5" id="submit-album">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-  <script src="/app.js"></script>
 </body>
 
 </html>
