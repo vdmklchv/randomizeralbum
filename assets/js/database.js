@@ -7,6 +7,7 @@ dotenv.config();
 const {
     MongoClient
 } = require('mongodb');
+const bodyParser = require("body-parser");
 
 let artist;
 let album;
@@ -14,8 +15,12 @@ let albumNumber;
 let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?fit=400%2C400&ssl=1';
 
 app.use(express.static('public'));
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", function (req, res) {
     getRandomAlbum().then(() => {
         res.render("index.html", {
             artist: artist,
@@ -26,12 +31,17 @@ app.get("/", (req, res) => {
     })
 })
 
-app.get("/next-album", (req, res) => {
+app.get("/next-album", function (req, res) {
     getRandomAlbum().then(() => res.redirect('/'));
 });
 
-app.get("/add", (req, res) => {
+app.get("/add", function (req, res) {
     res.render("add.html");
+})
+
+app.post("/add", function (req, res) {
+    saveToDb(req.body)
+        .then(res.redirect('/'));
 })
 
 async function getNumberOfAlbums() {
@@ -66,6 +76,16 @@ async function getRandomAlbum() {
         album = randomAlbum.name;
         art = randomAlbum.artwork;
     }
+}
+
+async function saveToDb(album) {
+    const collection = await getDbCollection();
+    collection.insertOne({
+        artist: album.artist,
+        name: album.title,
+        year: album.year,
+        artwork: album.artwork
+    })
 }
 
 
