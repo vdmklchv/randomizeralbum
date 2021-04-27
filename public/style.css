@@ -26,3 +26,7 @@ body {
   max-height: 300px;
   margin: auto;
 }
+
+#submit-album {
+  width: 100%;
+}

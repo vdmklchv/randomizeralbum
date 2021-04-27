@@ -7,7 +7,6 @@ dotenv.config();
 const {
     MongoClient
 } = require('mongodb');
-let albums = [];
 
 let artist;
 let album;
@@ -17,7 +16,7 @@ let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?
 app.use(express.static('public'));
 
 app.get("/", (req, res) => {
-    main().then(() => {
+    getRandomAlbum().then(() => {
         res.render("index.html", {
             artist: artist,
             album: album,
@@ -29,26 +28,11 @@ app.get("/", (req, res) => {
 
 app.get("/next-album", (req, res) => {
     getRandomAlbum().then(() => res.redirect('/'));
-    //main().then(() => res.redirect('/'));
-    //res.redirect("/");
 });
 
-
-async function main() {
-    //albums = [];
-    const numberOfAlbums = await getNumberOfAlbums();
-    if (albums.length !== numberOfAlbums) {
-        await retrieveAlbums();
-    }
-    await getRandomAlbum();
-};
-
-async function retrieveAlbums() {
-    const collection = await getDbCollection();
-    collection.find().forEach((item) => {
-        albums.push(item);
-    });
-}
+app.get("/add", (req, res) => {
+    res.render("add.html");
+})
 
 async function getNumberOfAlbums() {
     const collection = await getDbCollection();
@@ -68,6 +52,14 @@ async function getDbCollection() {
 }
 
 async function getRandomAlbum() {
+    let albums = [];
+    const numberOfAlbums = await getNumberOfAlbums();
+    if (albums.length !== numberOfAlbums) {
+        const collection = await getDbCollection();
+        await collection.find().forEach((item) => {
+            albums.push(item);
+        });
+    }
     if (albums.length !== 0) {
         const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
         artist = randomAlbum.artist;
