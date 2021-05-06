@@ -13,6 +13,7 @@ let artist;
 let album;
 let albumNumber;
 let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?fit=400%2C400&ssl=1';
+let artistNumber;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({
@@ -26,9 +27,10 @@ app.get("/", function (req, res) {
             artist: artist,
             album: album,
             albumNumber: albumNumber,
+            artistNumber: artistNumber,
             art: art,
         });
-    })
+    }).then(getNumberOfArtists);
 })
 
 app.get("/next-album", function (req, res) {
@@ -54,6 +56,15 @@ async function getNumberOfAlbums() {
     return albumNumber;
 }
 
+async function getNumberOfArtists() {
+    const collection = await getDbCollection();
+    const artists = [];
+    await collection.find().forEach((item) => {
+        artists.push(item.artist);
+    })
+    artistNumber = new Set(artists).size;
+}
+
 async function getDbCollection() {
     const uri = process.env.MONGODB_URI;
     const client = new MongoClient(uri, {
@@ -67,7 +78,9 @@ async function getDbCollection() {
 
 async function getRandomAlbum() {
     let albums = [];
+    // needs to be refactored, not good to keep it here
     const numberOfAlbums = await getNumberOfAlbums();
+    await getNumberOfArtists();
     if (albums.length !== numberOfAlbums) {
         const collection = await getDbCollection();
         await collection.find().forEach((item) => {
