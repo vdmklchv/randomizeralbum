@@ -45,10 +45,34 @@ app.get("/search", function (req, res) {
     res.render("search.html");
 })
 
+app.get("/search-db", function (req, res) {
+    const term = req.query.term;
+    findInDb(term).then((response) => {
+        res.send(JSON.stringify(response));
+    }).catch((e) => {
+        console.log("Error fetching data " + e);
+    })
+    //console.log("This is from app.get /search-db: " + term);
+    // res.send(JSON.stringify(results));
+})
+
 app.post("/add", function (req, res) {
     saveToDb(req.body)
         .then(res.redirect('/'));
 })
+
+async function findInDb(query) {
+    const searchResults = [];
+    const collection = await getDbCollection();
+    if (query) {
+        await collection.find().forEach((item) => {
+            if (item.artist.toLowerCase().includes(query.toLowerCase()) || item.name.toLowerCase().includes(query.toLowerCase())) {
+                searchResults.push(item);
+            }
+        })
+    }
+    return searchResults;
+}
 
 async function getNumberOfAlbums() {
     const collection = await getDbCollection();
