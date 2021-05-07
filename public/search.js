@@ -18,12 +18,17 @@ function search(e) {
       .then((response) => {
         return response.json()
       }).then((data) => {
-        for (album of data) {
-
-          const li = document.createElement('li');
-          li.appendChild(document.createTextNode(`${album.artist} - ${album.name}`));
-          li.classList.add('list-group-item');
-          document.querySelector('#results').appendChild(li);
+        if (data.length > 0) {
+          document.querySelector('#search-placeholder').style.display = 'none';
+          for (album of data) {
+            const li = document.createElement('li');
+            li.appendChild(document.createTextNode(`${album.artist} - ${album.name}`));
+            li.classList.add('list-group-item');
+            document.querySelector('#results').appendChild(li);
+          }
+        } else {
+          document.querySelector('#search-placeholder').style.display = 'block';
+          document.querySelector('#search-placeholder').textContent = "Sorry, no match";
         }
       });
     e.preventDefault();
