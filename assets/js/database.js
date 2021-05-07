@@ -22,7 +22,7 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 app.get("/", function (req, res) {
-    getRandomAlbum().then(() => {
+    getRandomAlbum().then(getNumberOfArtists).then(() => {
         res.render("index.html", {
             artist: artist,
             album: album,
@@ -30,7 +30,7 @@ app.get("/", function (req, res) {
             artistNumber: artistNumber,
             art: art,
         });
-    }).then(getNumberOfArtists);
+    });
 })
 
 app.get("/next-album", function (req, res) {
@@ -41,8 +41,8 @@ app.get("/add", function (req, res) {
     res.render("add.html");
 })
 
-app.get("/login", function (req, res) {
-    res.render("login.html");
+app.get("/search", function (req, res) {
+    res.render("search.html");
 })
 
 app.post("/add", function (req, res) {
@@ -78,9 +78,7 @@ async function getDbCollection() {
 
 async function getRandomAlbum() {
     let albums = [];
-    // needs to be refactored, not good to keep it here
     const numberOfAlbums = await getNumberOfAlbums();
-    await getNumberOfArtists();
     if (albums.length !== numberOfAlbums) {
         const collection = await getDbCollection();
         await collection.find().forEach((item) => {

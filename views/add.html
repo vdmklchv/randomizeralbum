@@ -30,7 +30,7 @@
             <a class="nav-link active" href="#">Add album</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link" href="/search">Search</a>
           </li>
         </ul>
       </div>
@@ -39,7 +39,7 @@
   <div class="container">
     <div class="row" id="main-row">
       <div class="col-10 col-lg-8 mx-auto" id="form-container">
-        <form action="/add" method="POST" class="mt-5" id="album-add-form">
+        <form action="/add" method="POST" class="mt-5" id="album-add-form" autocomplete="off">
           <div class="form-group">
             <label for="album-title">Album title</label>
             <input type="text" class="form-control mb-3" id="album-title" placeholder="Enter album title">

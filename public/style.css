@@ -1,11 +1,29 @@
 body {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 20px;
 }
 
+.album-data {
+  border-right: solid 2px rgba(32, 24, 88);
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px green solid;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: none;
+  border-bottom: 2px green solid;
+}
+
+.form-control:focus::placeholder {
+  color: transparent;
+}
+
 .container {
-  background-image: linear-gradient(to left, rgba(212, 173, 106, 0.4), rgba(212, 173, 106, 0.7));
-  border-radius: 1em;
   min-height: 400px;
 }
 
@@ -13,6 +31,7 @@ body {
   background-color: rgba(32, 24, 88);
   text-transform: uppercase;
   border: none;
+  transition: all ease-out 300ms;
 }
 
 .btn-primary:hover {
@@ -25,8 +44,15 @@ body {
   border-radius: 1em;
   max-height: 300px;
   margin: auto;
+  box-shadow: 3px 3px 5px gray;
 }
 
 #submit-album {
   width: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+  .album-data {
+    border-right: none;
+  }
 }
