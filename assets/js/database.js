@@ -21,111 +21,115 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
-app.get("/", function (req, res) {
-    getRandomAlbum().then(getNumberOfArtists).then(() => {
-        res.render("index.html", {
-            artist: artist,
-            album: album,
-            albumNumber: albumNumber,
-            artistNumber: artistNumber,
-            art: art,
-        });
-    });
-})
-
-app.get("/next-album", function (req, res) {
-    getRandomAlbum().then(() => res.redirect('/'));
+// connecting to db
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+    useUnifiedTopology: true
 });
-
-app.get("/add", function (req, res) {
-    res.render("add.html");
-})
-
-app.get("/search", function (req, res) {
-    res.render("search.html");
-})
-
-app.get("/search-db", function (req, res) {
-    const term = req.query.term;
-    findInDb(term).then((response) => {
-        res.send(JSON.stringify(response));
-    }).catch((e) => {
-        console.log("Error fetching data " + e);
+client.connect()
+    .then(() => {
+        const db = client.db("albumsdb");
+        return db;
     })
-    //console.log("This is from app.get /search-db: " + term);
-    // res.send(JSON.stringify(results));
-})
-
-app.post("/add", function (req, res) {
-    saveToDb(req.body)
-        .then(res.redirect('/'));
-})
-
-async function findInDb(query) {
-    const searchResults = [];
-    const collection = await getDbCollection();
-    if (query) {
-        await collection.find().forEach((item) => {
-            if (item.artist.toLowerCase().includes(query.toLowerCase()) || item.name.toLowerCase().includes(query.toLowerCase())) {
-                searchResults.push(item);
-            }
+    .then((db) => {
+        const collection = db.collection("albums");
+        return collection;
+    })
+    .then((collection) => {
+        app.get("/", function (req, res) {
+            getRandomAlbum().then(getNumberOfArtists).then(() => {
+                res.render("index.html", {
+                    artist: artist,
+                    album: album,
+                    albumNumber: albumNumber,
+                    artistNumber: artistNumber,
+                    art: art,
+                });
+            });
         })
-    }
-    return searchResults;
-}
 
-async function getNumberOfAlbums() {
-    const collection = await getDbCollection();
-    albumNumber = await collection.countDocuments();
-    return albumNumber;
-}
-
-async function getNumberOfArtists() {
-    const collection = await getDbCollection();
-    const artists = [];
-    await collection.find().forEach((item) => {
-        artists.push(item.artist);
-    })
-    artistNumber = new Set(artists).size;
-}
-
-async function getDbCollection() {
-    const uri = process.env.MONGODB_URI;
-    const client = new MongoClient(uri, {
-        useUnifiedTopology: true
-    });
-    await client.connect();
-    const db = await client.db("albumsdb");
-    const collection = await db.collection("albums");
-    return collection;
-}
-
-async function getRandomAlbum() {
-    let albums = [];
-    const numberOfAlbums = await getNumberOfAlbums();
-    if (albums.length !== numberOfAlbums) {
-        const collection = await getDbCollection();
-        await collection.find().forEach((item) => {
-            albums.push(item);
+        app.get("/next-album", function (req, res) {
+            getRandomAlbum().then(() => res.redirect('/'));
         });
-    }
-    if (albums.length !== 0) {
-        const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
-        artist = randomAlbum.artist;
-        album = randomAlbum.name;
-        art = randomAlbum.artwork;
-    }
-}
 
-async function saveToDb(album) {
-    const collection = await getDbCollection();
-    collection.insertOne({
-        artist: album.artist,
-        name: album.title,
-        year: album.year,
-        artwork: album.artwork
-    })
-}
+        app.get("/add", function (req, res) {
+            res.render("add.html");
+        })
+
+        app.get("/search", function (req, res) {
+            res.render("search.html");
+        })
+
+        app.get("/search-db", function (req, res) {
+            const term = req.query.term;
+            findInDb(term).then((response) => {
+                res.send(JSON.stringify(response));
+            }).catch((e) => {
+                console.log("Error fetching data " + e);
+            })
+            //console.log("This is from app.get /search-db: " + term);
+            // res.send(JSON.stringify(results));
+        })
+
+        app.post("/add", function (req, res) {
+            saveToDb(req.body)
+                .then(res.redirect('/'));
+        })
+
+        async function findInDb(query) {
+            const searchResults = [];
+            if (query) {
+                await collection.find().forEach((item) => {
+                    if (item.artist.toLowerCase().includes(query.toLowerCase()) || item.name.toLowerCase().includes(query.toLowerCase())) {
+                        searchResults.push(item);
+                    }
+                })
+            }
+            return searchResults;
+        }
+
+        async function getNumberOfAlbums() {
+            albumNumber = await collection.countDocuments();
+            return albumNumber;
+        }
+
+        async function getNumberOfArtists() {
+            const artists = [];
+            await collection.find().forEach((item) => {
+                artists.push(item.artist);
+            })
+            artistNumber = new Set(artists).size;
+        }
+
+        async function getRandomAlbum() {
+            let albums = [];
+            const numberOfAlbums = await getNumberOfAlbums();
+            if (albums.length !== numberOfAlbums) {
+                await collection.find().forEach((item) => {
+                    albums.push(item);
+                });
+            }
+            if (albums.length !== 0) {
+                const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
+                artist = randomAlbum.artist;
+                album = randomAlbum.name;
+                art = randomAlbum.artwork;
+            }
+        }
+
+        async function saveToDb(album) {
+            await collection.insertOne({
+                artist: album.artist,
+                name: album.title,
+                year: album.year,
+                artwork: album.artwork
+            })
+        }
+    });
+
+
+
+
 
 
 app.listen(process.env.PORT || 3000);
