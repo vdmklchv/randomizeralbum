@@ -6,7 +6,6 @@ searchBtn.addEventListener('click', (e) => {
 
 // search
 function search(e) {
-  const results = [];
   let searchTerm = document.querySelector('#search').value;
 
   if (searchTerm === '') {
@@ -33,6 +32,8 @@ function search(e) {
       });
     e.preventDefault();
   }
+
+  document.querySelector('#search').value = '';
 }
 
 // DUPLICATE FROM APP.JS FIND WAY TO REMOVE
