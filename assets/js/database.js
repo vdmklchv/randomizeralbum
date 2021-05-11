@@ -9,12 +9,12 @@ const {
 } = require('mongodb');
 const bodyParser = require("body-parser");
 
-let artist;
-let album;
+// let artist;
+// let album;
 let albumNumber;
-let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?fit=400%2C400&ssl=1';
+// let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?fit=400%2C400&ssl=1';
 let artistNumber;
-let year;
+// let year;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({
@@ -38,20 +38,19 @@ client.connect()
     })
     .then((collection) => {
         app.get("/", function (req, res) {
-            getRandomAlbum().then(getNumberOfArtists).then(() => {
-                res.render("index.html", {
-                    artist: artist,
-                    album: album,
-                    albumNumber: albumNumber,
-                    artistNumber: artistNumber,
-                    art: art,
-                    year: year,
-                });
+            res.render('index.html');
             });
+        
+
+        app.get("/random", function (req, res) {
+            getRandomAlbum().then((album) => {
+                res.send(album);
+            });
+
         })
 
         app.get("/next-album", function (req, res) {
-            getRandomAlbum().then(() => res.redirect('/'));
+            res.redirect('/');
         });
 
         app.get("/add", function (req, res) {
@@ -69,8 +68,6 @@ client.connect()
             }).catch((e) => {
                 console.log("Error fetching data " + e);
             })
-            //console.log("This is from app.get /search-db: " + term);
-            // res.send(JSON.stringify(results));
         })
 
         app.post("/add", function (req, res) {
@@ -101,6 +98,7 @@ client.connect()
                 artists.push(item.artist);
             })
             artistNumber = new Set(artists).size;
+            return artistNumber;
         }
 
         async function getRandomAlbum() {
@@ -113,11 +111,24 @@ client.connect()
             }
             if (albums.length !== 0) {
                 const randomAlbum = albums[Math.floor(Math.random() * albums.length)];
-                artist = randomAlbum.artist;
-                album = randomAlbum.name;
-                art = randomAlbum.artwork;
-                year = randomAlbum.year;
+                // create object for refactoring
+                // add artist albums
+                randomAlbum.artistAlbums = albums.filter(album => {
+                    if (randomAlbum !== album) {
+                        return album.artist === randomAlbum.artist;
+                    }
+                });
+                // add albums of the same year
+                randomAlbum.onThisYear = albums.filter(album => {
+                    if (randomAlbum !== album) {
+                        return album.year === randomAlbum.year;
+                    }
+                });
+                randomAlbum.totalArtists = await getNumberOfArtists();
+                randomAlbum.totalAlbums = await getNumberOfAlbums();
+                return randomAlbum;
             }
+            return {};
         }
 
         async function saveToDb(album) {

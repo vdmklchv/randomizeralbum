@@ -3,6 +3,12 @@
 // query selectors
 const relatedArtistAlbumsContainer = document.querySelector(".related-artist-albums");
 const relatedYearAlbumsContainer = document.querySelector(".related-year-albums");
+const albumLabel = document.querySelector('#album');
+const artistLabel = document.querySelector('#artist-name');
+const yearLabel = document.querySelector('#release-year');
+const artwork = document.querySelector('#artwork');
+const albumNumLabel = document.querySelector('#album-num');
+const artistNumLabel = document.querySelector('#artist-num');
 
 // After next album show 2 segments
 // generic display albums data
@@ -18,11 +24,11 @@ const displayAlbums = function (list, container) {
       if (!displayList.includes(newList[randomIndex])) {
         displayList.push(newList[randomIndex]);
       }
-    } 
+    }
   } else {
     displayList = newList;
   }
-  
+
   // display items
   for (let item of displayList) {
     const li = document.createElement('li');
@@ -38,31 +44,21 @@ const displayAlbums = function (list, container) {
   }
 }
 
-// 1. more albums from same artist
-const getArtistAlbums = async function () {
-  // get artist name
-  const artist = document.querySelector('#artist-name').textContent;
-
-  // fetch albums from same artist
-  await fetch(`/search-db?term=${artist}`)
-    .then((response) => response.json())
-    .then((data) => {
-      // display albums from same artist
-      displayAlbums(data, relatedArtistAlbumsContainer);
-    });
+const displayRandomAlbum = function (album) {
+  albumLabel.textContent = album.name;
+  artistLabel.textContent = album.artist;
+  yearLabel.textContent = album.year;
+  artwork.src = album.artwork;
+  artistNumLabel.textContent = album.totalArtists;
+  albumNumLabel.textContent = album.totalAlbums;
 }
 
-getArtistAlbums();
+// Get random number on frontend
+const randomAlbum = fetch('/random')
+  .then((response) => response.json())
+  .then(data => {
+    displayRandomAlbum(data);
+    displayAlbums(data.artistAlbums, relatedArtistAlbumsContainer);
+    displayAlbums(data.onThisYear, relatedYearAlbumsContainer);
+  });
 
-
-// 2. albums of this year
-const getYearAlbums = async function () {
-  // get release year
-  const year = document.querySelector('#release-year').textContent;
-
-  await fetch(`/search-db?term=${year}`)
-    .then((response) => response.json())
-  .then((data) => displayAlbums(data, relatedYearAlbumsContainer))
-}
-
-getYearAlbums();

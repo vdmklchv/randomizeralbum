@@ -42,11 +42,11 @@
             <div class="col-12 col-md-6 col-lg-7 text-center text-md-start my-5 album-data mx-auto px-5 d-flex
                 flex-column justify-content-between">
                 <div class="data">
-                    <h1 class="mb-3 display-3" id="album"><%= album %></h1>
-                    <h2 class="mb-3 display-5" id="artist-name"><%= artist %></h2>
-                    <h2 class="mb-3 display-7" id="release-year"><%= year %></h2>
-                    <p>Number of albums: <%= albumNumber %></p>
-                    <p>Number of artists: <%= artistNumber %></p>
+                    <h1 class="mb-3 display-3" id="album"></h1>
+                    <h2 class="mb-3 display-5" id="artist-name"></h2>
+                    <h2 class="mb-3 display-7" id="release-year"></h2>
+                    <p>Number of albums: <span id="album-num"></span></p>
+                    <p>Number of artists: <span id="artist-num"></span></p>
                 </div>
                 <div class="action-controls">
                     <form action="/next-album" method="get">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-5 my-2 my-md-5 album-artwork mx-auto d-flex align-items-center">
-                <img id="artwork" class="img-fluid" src="<%= art %>" alt="album artwork">
+                <img id="artwork" class="img-fluid" alt="album artwork">
             </div>
         </div>
     </div>
