@@ -3,6 +3,15 @@ body {
   font-size: 20px;
 }
 
+li > img.img-fluid {
+  max-width: 100px;
+  height: auto;
+}
+
+li {
+  align-items: center;
+}
+
 .album-data {
   border-right: solid 2px rgba(32, 24, 88);
 }

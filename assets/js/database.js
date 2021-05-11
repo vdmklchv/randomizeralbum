@@ -14,6 +14,7 @@ let album;
 let albumNumber;
 let art = 'https://i2.wp.com/planx.co.il/wp-content/uploads/2011/05/400x400.png?fit=400%2C400&ssl=1';
 let artistNumber;
+let year;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({
@@ -44,6 +45,7 @@ client.connect()
                     albumNumber: albumNumber,
                     artistNumber: artistNumber,
                     art: art,
+                    year: year,
                 });
             });
         })
@@ -80,7 +82,7 @@ client.connect()
             const searchResults = [];
             if (query) {
                 await collection.find().forEach((item) => {
-                    if (item.artist.toLowerCase().includes(query.toLowerCase()) || item.name.toLowerCase().includes(query.toLowerCase())) {
+                    if (item.artist.toLowerCase().includes(query.toLowerCase()) || item.name.toLowerCase().includes(query.toLowerCase()) || item.year === query) {
                         searchResults.push(item);
                     }
                 })
@@ -114,6 +116,7 @@ client.connect()
                 artist = randomAlbum.artist;
                 album = randomAlbum.name;
                 art = randomAlbum.artwork;
+                year = randomAlbum.year;
             }
         }
 
