@@ -58,7 +58,7 @@ const displayRandomAlbum = function (album) {
 document.querySelector('#next-album').addEventListener('click', (e) => {
   e.preventDefault();
   e.stopPropagation();
-  fetch('http://localhost:3000/random')
+  fetch('http://ralbum.herokuapp.com/random')
     .then((response) => response.json())
     .then(data => {
       displayRandomAlbum(data);
