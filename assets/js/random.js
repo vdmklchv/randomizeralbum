@@ -66,6 +66,7 @@ document.querySelector('#next-album').addEventListener('click', (e) => {
   fetch('https://ralbum.herokuapp.com/random')
     .then((response) => response.json())
     .then(data => {
+      sessionStorage.setItem('ralbum-cur-alb', JSON.stringify(data));
       displayRandomAlbum(data);
       displayAlbums(data.artistAlbums, relatedArtistAlbumsContainer);
       displayAlbums(data.onThisYear, relatedYearAlbumsContainer);
