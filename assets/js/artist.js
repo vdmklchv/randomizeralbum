@@ -8,6 +8,8 @@ const container = document.querySelector('#albums');
 const album = JSON.parse(sessionStorage.getItem('ralbum-cur-alb'));
 
 album?.artistAlbums.push(album);
+const fullAlbumList = album?.artistAlbums.slice().sort((a, b) => a.year - b.year);
+console.log(fullAlbumList);
 
 const displayList = function (list) {
   console.log(list);
@@ -26,4 +28,4 @@ const displayList = function (list) {
 }
 
 artistLabel.textContent = album?.artist;
-displayList(album?.artistAlbums);
+displayList(fullAlbumList);
