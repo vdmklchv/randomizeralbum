@@ -102,15 +102,11 @@ client.connect()
                 // create object for refactoring
                 // add artist albums
                 randomAlbum.artistAlbums = albums.filter(album => {
-                    if (randomAlbum !== album) {
                         return album.artist === randomAlbum.artist;
-                    }
                 });
                 // add albums of the same year
                 randomAlbum.onThisYear = albums.filter(album => {
-                    if (randomAlbum !== album) {
                         return album.year === randomAlbum.year;
-                    }
                 });
                 randomAlbum.totalArtists = await getNumberOfArtists();
                 randomAlbum.totalAlbums = await getNumberOfAlbums();
