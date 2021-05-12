@@ -57,6 +57,7 @@ const displayRandomAlbum = function (album) {
 // Get random number on frontend
 document.querySelector('#next-album').addEventListener('click', (e) => {
   e.preventDefault();
+  e.stopPropagation();
   fetch('http://localhost:3000/random')
     .then((response) => response.json())
     .then(data => {
