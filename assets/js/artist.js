@@ -7,9 +7,10 @@ const container = document.querySelector('#albums');
 
 const album = JSON.parse(sessionStorage.getItem('ralbum-cur-alb'));
 
-
+album?.artistAlbums.push(album);
 
 const displayList = function (list) {
+  console.log(list);
   for (let item of list) {
     const li = document.createElement('li');
     li.className = "d-flex justify-content-between list-group-item";
