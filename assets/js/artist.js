@@ -18,10 +18,16 @@ const displayList = function (list) {
     li.className = "d-flex justify-content-between list-group-item";
     const img = document.createElement('img');
     img.className = "img-fluid";
+    const textDiv = document.createElement('div');
+    textDiv.className = "d-flex justify-content-between flex-grow-1 me-4";
     const p = document.createElement('p');
-    img.src = item.artwork;
     p.textContent = item.name;
-    li.appendChild(p);
+    const year = document.createElement('p');
+    year.textContent = item.year;
+    img.src = item.artwork;
+    textDiv.appendChild(p);
+    textDiv.appendChild(year);
+    li.appendChild(textDiv);
     li.appendChild(img);
     container.appendChild(li);
   }
