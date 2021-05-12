@@ -13,6 +13,7 @@ const artistNumLabel = document.querySelector('#artist-num');
 // After next album show 2 segments
 // generic display albums data
 const displayAlbums = function (list, container) {
+  container.parentElement.style.display = 'block';
   container.innerHTML = '';
   // Get up to 5 albums of 
   let displayList = [];
@@ -29,20 +30,24 @@ const displayAlbums = function (list, container) {
   } else {
     displayList = newList;
   }
-
-  // display items
-  for (let item of displayList) {
-    const li = document.createElement('li');
-    li.className = "d-flex justify-content-between list-group-item";
-    const img = document.createElement('img');
-    img.className = "img-fluid";
-    const p = document.createElement('p');
-    img.src = item.artwork;
-    p.textContent = item.name;
-    li.appendChild(p);
-    li.appendChild(img);
-    container.appendChild(li);
+  if (displayList.length !== 0) {
+    // display items
+    for (let item of displayList) {
+      const li = document.createElement('li');
+      li.className = "d-flex justify-content-between list-group-item";
+      const img = document.createElement('img');
+      img.className = "img-fluid";
+      const p = document.createElement('p');
+      img.src = item.artwork;
+      p.textContent = item.name;
+      li.appendChild(p);
+      li.appendChild(img);
+      container.appendChild(li);
+    }
+  } else {
+    container.parentElement.style.display = 'none';
   }
+  
 }
 
 const displayRandomAlbum = function (album) {
