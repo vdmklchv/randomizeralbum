@@ -37,9 +37,9 @@ client.connect()
         return collection;
     })
     .then((collection) => {
-        app.get("/", function (req, res) {
-            res.render('index.html');
-            });
+        // app.get("/", function (req, res) {
+        //     res.render('index.html');
+        //     });
         
 
         app.get("/random", function (req, res) {
@@ -53,13 +53,13 @@ client.connect()
             res.redirect('/');
         });
 
-        app.get("/add", function (req, res) {
-            res.render("add.html");
-        })
+        // app.get("/add", function (req, res) {
+        //     res.render("add.html");
+        // })
 
-        app.get("/search", function (req, res) {
-            res.render("search.html");
-        })
+        // app.get("/search", function (req, res) {
+        //     res.render("search.html");
+        // })
 
         app.get("/search-db", function (req, res) {
             const term = req.query.term;

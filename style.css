@@ -1,0 +1,67 @@
+body {
+  font-family: "Ubuntu", sans-serif;
+  font-size: 20px;
+}
+
+li > img.img-fluid {
+  max-width: 100px;
+  height: auto;
+}
+
+li {
+  align-items: center;
+}
+
+.album-data {
+  border-right: solid 2px rgba(32, 24, 88);
+}
+
+.form-control {
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px green solid;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: none;
+  border-bottom: 2px green solid;
+}
+
+.form-control:focus::placeholder {
+  color: transparent;
+}
+
+.container {
+  min-height: 400px;
+}
+
+.btn-primary {
+  background-color: rgba(32, 24, 88);
+  text-transform: uppercase;
+  border: none;
+  transition: all ease-out 300ms;
+}
+
+.btn-primary:hover {
+  transform: scale(1.01);
+  cursor: pointer;
+  background-color: rgb(56, 43, 143);
+}
+
+#artwork {
+  border-radius: 1em;
+  max-height: 300px;
+  margin: auto;
+  box-shadow: 3px 3px 5px gray;
+}
+
+#submit-album {
+  width: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+  .album-data {
+    border-right: none;
+  }
+}

@@ -13,6 +13,7 @@ const artistNumLabel = document.querySelector('#artist-num');
 // After next album show 2 segments
 // generic display albums data
 const displayAlbums = function (list, container) {
+  container.innerHTML = '';
   // Get up to 5 albums of 
   let displayList = [];
   const newList = list.filter((album) => {
@@ -56,7 +57,7 @@ const displayRandomAlbum = function (album) {
 // Get random number on frontend
 document.querySelector('#next-album').addEventListener('click', (e) => {
   e.preventDefault();
-  fetch('/random')
+  fetch('http://localhost:3000/random')
     .then((response) => response.json())
     .then(data => {
       displayRandomAlbum(data);
