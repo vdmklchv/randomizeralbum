@@ -8,6 +8,8 @@ const {
     MongoClient
 } = require('mongodb');
 const bodyParser = require("body-parser");
+const cors = require('cors');
+app.use(cors({ origin: true, credentials: true }));
 
 // let artist;
 // let album;
@@ -59,8 +61,7 @@ client.connect()
         })
 
         app.post("/add", function (req, res) {
-            saveToDb(req.body)
-                .then(res.redirect('/'));
+            saveToDb(req.body);
         })
 
         async function findInDb(query) {
