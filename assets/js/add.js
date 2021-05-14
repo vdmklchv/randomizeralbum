@@ -15,7 +15,7 @@ function addAlbum(event) {
   } else {
     const album = new Album(name, artist, artwork, year);
     // send data to backend
-    fetch('/add', {
+    fetch('https://ralbum.herokuapp.com/add', {
       method: "POST",
       body: JSON.stringify(album),
       headers: {
