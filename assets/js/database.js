@@ -29,7 +29,7 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
+app.options('*', cors());
 // connecting to db
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
