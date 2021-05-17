@@ -63,6 +63,7 @@ client.connect()
 
         app.post("/add", function (req, res) {
             saveToDb(req.body);
+            res.send(req.body);
         })
 
         async function findInDb(query) {
